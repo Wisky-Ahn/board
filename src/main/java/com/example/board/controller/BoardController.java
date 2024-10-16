@@ -80,7 +80,7 @@ public class BoardController {
 
     //상세조회 화면
     @GetMapping("/detail/{id}")
-    public String detail(@PathVariable Long id, Model model){
+    public String detail(@PathVariable(name = "id") Long id, Model model){
         log.info("detail");
         BoardDTO boardDTO = boardService.findById(id, true);
         if(boardDTO==null){
