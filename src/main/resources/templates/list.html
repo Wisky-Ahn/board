@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>목록</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" >
+</head>
+<body>
+<div class="container">
+    <nav class="navbar">
+        <a class="navbar-brand">Logo</a>
+        <div class="d-flex">
+            <th:block th:if="${session.member != null}">
+                <a class="btn-primary m-1" href="/mypage" th:text="${session.member?.name}" ></a>
+                <a class="btn-primary m-1" href="/logout" >로그아웃</a>
+            </th:block>
+            <th:block th:unless="${session.member != null}">
+                <a class="btn-primary m-1" href="/login" >로그인</a>
+            </th:block>
+        </div>
+    </nav>
+
+    <h1>게시판 목록</h1>
+    <form class="row g-3" method="get" action="/list">
+        <input type="hidden" name="page" value="1">
+        <div class="col-auto">
+            <select class="form-select" id="type" name="type">
+                <option value="a" th:selected="${request.type=='a'}">전체</option>
+                <option value="t" th:selected="${request.type=='t'}">타이틀</option>
+                <option value="c" th:selected="${request.type=='c'}">본문</option>
+                <option value="w" th:selected="${request.type=='w'}">작성자</option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <label for="keyword" class="visually-hidden">검색어</label>
+            <input type="text" class="form-control" id="keyword" name="keyword" placeholder="검색어 입력">
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary mb-3">검색</button>
+            <button type="button" class="btn btn-primary mb-3" onclick="location.href='/write'">등록</button>
+        </div>
+    </form>
+    <table class="table">
+        <thead class="table-light">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">타이틀</th>
+            <th scope="col">본문</th>
+            <th scope="col">작성자</th>
+            <th scope="col">등록일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item, status : ${result.dtoList}" th:onclick="location.href='/detail/[[${item.id}]]'">
+            <th scope="row" th:text="${status.count}">1</th>
+            <td th:text="${item.title}">Mark</td>
+            <td th:text="${item.content}">Otto</td>
+            <td th:text="${item.writer}">@mdo</td>
+            <td th:text="${#temporals.format(item.regDate, 'yyyy/MM/dd')}">@mdo</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <ul class="pagination justify-content-center align-items-center">
+        <li class="page-item" th:if="${result.prev}">
+            <a class="page-link" th:href="@{/list(page=${result.start-1}, type=${request.type}, keyword=${request.keyword})}">Previous</a>
+        </li>
+        <li th:class="${result.page==page?'page-item active':'page-item'}" th:each="page : ${result.pageList}">
+            <a class="page-link" th:href="@{/list(page=${page}, type=${request.type}, keyword=${request.keyword})}" th:text="${page}">3</a>
+        </li>
+
+        <li class="page-item" th:if="${result.next}">
+            <a class="page-link" th:href="@{/list(page=${result.end+1}, type=${request.type}, keyword=${request.keyword})}">Next</a>
+        </li>
+    </ul>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" ></script>
+
+<script th:inline="javascript">
+    var msg = [[${msg}]];
+    if(msg){
+        alert(msg);
+    }
+</script>
+</body>
+</html>

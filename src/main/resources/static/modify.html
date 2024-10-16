@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>게시판 수정</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" >
+</head>
+<body>
+<div class="container">
+    <h1>게시판 수정</h1>
+    <form action="/modify" method="post">
+        <div class="mb-3 col-3">
+            <label for="writer" class="form-label">작성자</label>
+            <input type="text" class="form-control" id="writer" name="writer" placeholder="작성자" readonly>
+        </div>
+        <div class="mb-3 col-6">
+            <label for="title" class="form-label">타이틀</label>
+            <input type="text" class="form-control" id="title" name="title" placeholder="타이틀">
+        </div>
+        <div class="mb-3 col-6">
+            <label for="content" class="form-label">작성내용</label>
+            <textarea class="form-control" id="content" name="content" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">수정</button>
+        <button type="button" class="btn btn-secondary mt-3">취소</button>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" ></script>
+</body>
+</html>
