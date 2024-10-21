@@ -1,88 +1,159 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>목록</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" >
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Edward Kim">
+    <title>블로그 만들기</title>
+    <meta name="description" content="100% 취향 반영, 내 손으로 직접 블로그를 만들어 보자!!">
+    <meta name="robots" content="index,follow">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #fafafa;
+        }
+        .navbar {
+            margin-bottom: 20px;
+        }
+        .blog-title {
+            font-weight: bold;
+            color: #343a40;
+        }
+        .post-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .post-description {
+            color: #6c757d;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
+
+
+<!-- Main Content -->
 <div class="container">
-    <nav class="navbar">
-        <a class="navbar-brand">Logo</a>
-        <div class="d-flex">
-            <th:block th:if="${session.member != null}">
-                <a class="btn-primary m-1" href="/mypage" th:text="${session.member?.name}" ></a>
-                <a class="btn-primary m-1" href="/logout" >로그아웃</a>
-            </th:block>
-            <th:block th:unless="${session.member != null}">
-                <a class="btn-primary m-1" href="/login" >로그인</a>
-            </th:block>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Wisky_Ahn blog</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Blog</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Portfolio</a>
+                </li>
+
+                <!-- 로그인/로그아웃 버튼 -->
+                <th:block th:if="${session.member != null}">
+                    <li class="nav-item">
+                        <a class="nav-link" th:text="${session.member?.name}">마이페이지</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn" href="/logout">로그아웃</a>
+                    </li>
+                </th:block>
+                <th:block th:unless="${session.member != null}">
+                    <li class="nav-item">
+                        <a class="nav-link btn" href="/login">로그인</a>
+                    </li>
+                </th:block>
+            </ul>
         </div>
     </nav>
 
-    <h1>게시판 목록</h1>
-    <form class="row g-3" method="get" action="/list">
-        <input type="hidden" name="page" value="1">
-        <div class="col-auto">
-            <select class="form-select" id="type" name="type">
-                <option value="a" th:selected="${request.type=='a'}">전체</option>
-                <option value="t" th:selected="${request.type=='t'}">타이틀</option>
-                <option value="c" th:selected="${request.type=='c'}">본문</option>
-                <option value="w" th:selected="${request.type=='w'}">작성자</option>
-            </select>
-        </div>
-        <div class="col-auto">
-            <label for="keyword" class="visually-hidden">검색어</label>
-            <input type="text" class="form-control" id="keyword" name="keyword" placeholder="검색어 입력">
-        </div>
-        <div class="col-auto">
-            <button type="submit" class="btn btn-primary mb-3">검색</button>
-            <button type="button" class="btn btn-primary mb-3" onclick="location.href='/write'">등록</button>
-        </div>
-    </form>
-    <table class="table">
-        <thead class="table-light">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">타이틀</th>
-            <th scope="col">본문</th>
-            <th scope="col">작성자</th>
-            <th scope="col">등록일</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="item, status : ${result.dtoList}" th:onclick="location.href='/detail/[[${item.id}]]'">
-            <th scope="row" th:text="${status.count}">1</th>
-            <td th:text="${item.title}">Mark</td>
-            <td th:text="${item.content}">Otto</td>
-            <td th:text="${item.writer}">@mdo</td>
-            <td th:text="${#temporals.format(item.regDate, 'yyyy/MM/dd')}">@mdo</td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-3 mb-4">
+            <div class="sticky-top">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <!-- 프로필 이미지 -->
+                        <img src="/images/avatar.svg" alt="Profile Image" class="rounded-circle" style="width:150px; height:150px; object-fit:cover;">
 
-    <ul class="pagination justify-content-center align-items-center">
-        <li class="page-item" th:if="${result.prev}">
-            <a class="page-link" th:href="@{/list(page=${result.start-1}, type=${request.type}, keyword=${request.keyword})}">Previous</a>
-        </li>
-        <li th:class="${result.page==page?'page-item active':'page-item'}" th:each="page : ${result.pageList}">
-            <a class="page-link" th:href="@{/list(page=${page}, type=${request.type}, keyword=${request.keyword})}" th:text="${page}">3</a>
-        </li>
+                        <!-- 이름 -->
+                        <h5 class="blog-title mt-3">안현준</h5>
 
-        <li class="page-item" th:if="${result.next}">
-            <a class="page-link" th:href="@{/list(page=${result.end+1}, type=${request.type}, keyword=${request.keyword})}">Next</a>
-        </li>
-    </ul>
+                        <!-- 소개 -->
+                        <p class="text-muted">Fullstack Developer</p>
+                        <p>SpringBoot, React, and more.</p>
+
+                        <!-- GitHub 링크 -->
+                        <a href="https://github.com/Wisky-Ahn" target="_blank">
+                            <img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1566899596/noticon/slhw4nu8hybreryigopq.png"
+                                 alt="GitHub" style="width:20px; height:20px; vertical-align:middle; margin-right:5px;">
+                            GitHub
+                        </a>
+                        <!-- 글쓰기 버튼 -->
+                        <div class="mt-3">
+                            <a href="/write" class="btn btn-outline-secondary">Write Post</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blog Posts -->
+        <div class="col-lg-9">
+            <!-- Post 1 -->
+            <div th:each="item, status : ${result.dtoList}" th:onclick="location.href='/detail/[[${item.id}]]'" class="card">
+                <div class="card-body">
+                    <h2 th:text="${item.title}" class="post-title">기술 블로그를 만들 때 고려해야 할 점</h2>
+                    <p th:text="${item.firstLineOfContent}" class="post-description">블로그를 만들 때 어떤 것들을 고려해야 할까? 🤔</p>
+                    <p th:text="${#temporals.format(item.regDate, 'yyyy/MM/dd')}" class="text-muted">22.11.11</p>
+                </div>
+            </div>
+
+<!--            &lt;!&ndash; Post 2 &ndash;&gt;-->
+<!--            <div class="card">-->
+<!--                <div class="card-body">-->
+<!--                    <h2 class="post-title">Next.js 블로그 글 페이지 만들기</h2>-->
+<!--                    <p class="post-description">glob를 활용하여 디랙토리 기반으로 페이지들을 생성해보자 🤔</p>-->
+<!--                    <p class="text-muted">22.11.11</p>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Post 3 &ndash;&gt;-->
+<!--            <div class="card">-->
+<!--                <div class="card-body">-->
+<!--                    <h2 class="post-title">Next.js 블로그 글의 추가 정보 파싱하기</h2>-->
+<!--                    <p class="post-description">gray-matter, reading-time 등을 활용하여 글에 대한 추가 정보를 알아내자.</p>-->
+<!--                    <p class="text-muted">22.11.11 | 5분 읽기</p>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Post 4 &ndash;&gt;-->
+<!--            <div class="card">-->
+<!--                <div class="card-body">-->
+<!--                    <h2 class="post-title">Next.js mdx plugin</h2>-->
+<!--                    <p class="post-description">`next-mdx-remote`에서 플로그인으로 이쁜 결과물을 만들자.</p>-->
+<!--                    <p class="text-muted">22.11.11 | 8분 읽기</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+    </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" ></script>
+<!-- Footer -->
+<footer class="text-center mt-4">
+    <p>&copy; 2024-2024 Wisky_Ahn blog | Powered by <a href="https://getbootstrap.com/">Bootstrap</a></p>
+</footer>
 
-<script th:inline="javascript">
-    var msg = [[${msg}]];
-    if(msg){
-        alert(msg);
-    }
-</script>
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>

@@ -92,7 +92,7 @@ public class BoardController {
 
     //수정 화면
     @GetMapping("/modify/{id}")
-    public String modify(@PathVariable Long id, Model model
+    public String modify(@PathVariable(name = "id") Long id, Model model
             , @SessionAttribute(name = "member", required = false) MemberDTO member){
         log.info("modify");
         if(member==null){

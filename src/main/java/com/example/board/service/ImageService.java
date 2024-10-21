@@ -19,7 +19,11 @@ public class ImageService {
 
 	@Autowired UploadFileRepository uploadFileRepository;
 
-	private final static Path rootLocation = Paths.get("C://upload", "board");
+	// Windows 경로를 Mac 경로로 수정
+	// 파일 저장 경로를 "/Users/anhyeonjun/Desktop/sw 2024/board/upload/board"로 설정
+	private final static Path rootLocation = Paths.get("/Users/anhyeonjun/Desktop/sw 2024/board/upload/board");
+
+
 
 	public UploadFile store(MultipartFile file) throws Exception {
 		//		 fileName : 예류2.jpg
