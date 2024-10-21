@@ -15,20 +15,25 @@
         body {
             background-color: #fafafa;
         }
+
         .navbar {
             margin-bottom: 20px;
         }
+
         .blog-title {
             font-weight: bold;
             color: #343a40;
         }
+
         .post-title {
             font-size: 1.5rem;
             font-weight: bold;
         }
+
         .post-description {
             color: #6c757d;
         }
+
         .card {
             margin-bottom: 20px;
         }
@@ -42,7 +47,8 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="/">Wisky_Ahn blog</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -79,7 +85,8 @@
                 <div class="card text-center">
                     <div class="card-body">
                         <!-- 프로필 이미지 -->
-                        <img src="/images/avatar.svg" alt="Profile Image" class="rounded-circle" style="width:150px; height:150px; object-fit:cover;">
+                        <img src="/images/avatar.svg" alt="Profile Image" class="rounded-circle"
+                             style="width:150px; height:150px; object-fit:cover;">
 
                         <!-- 이름 -->
                         <h5 class="blog-title mt-3">안현준</h5>
@@ -107,53 +114,26 @@
         <!-- Blog Posts -->
         <div class="col-lg-9">
             <!-- Post 1 -->
-            <div th:each="item, status : ${result.dtoList}" th:onclick="location.href='/detail/[[${item.id}]]'" class="card">
+            <div th:each="item, status : ${result.dtoList}" th:onclick="location.href='/detail/[[${item.id}]]'"
+                 class="card">
                 <div class="card-body">
                     <h2 th:text="${item.title}" class="post-title">기술 블로그를 만들 때 고려해야 할 점</h2>
                     <p th:text="${item.firstLineOfContent}" class="post-description">블로그를 만들 때 어떤 것들을 고려해야 할까? 🤔</p>
                     <p th:text="${#temporals.format(item.regDate, 'yyyy/MM/dd')}" class="text-muted">22.11.11</p>
                 </div>
             </div>
-
-<!--            &lt;!&ndash; Post 2 &ndash;&gt;-->
-<!--            <div class="card">-->
-<!--                <div class="card-body">-->
-<!--                    <h2 class="post-title">Next.js 블로그 글 페이지 만들기</h2>-->
-<!--                    <p class="post-description">glob를 활용하여 디랙토리 기반으로 페이지들을 생성해보자 🤔</p>-->
-<!--                    <p class="text-muted">22.11.11</p>-->
-<!--                </div>-->
-<!--            </div>-->
-
-<!--            &lt;!&ndash; Post 3 &ndash;&gt;-->
-<!--            <div class="card">-->
-<!--                <div class="card-body">-->
-<!--                    <h2 class="post-title">Next.js 블로그 글의 추가 정보 파싱하기</h2>-->
-<!--                    <p class="post-description">gray-matter, reading-time 등을 활용하여 글에 대한 추가 정보를 알아내자.</p>-->
-<!--                    <p class="text-muted">22.11.11 | 5분 읽기</p>-->
-<!--                </div>-->
-<!--            </div>-->
-
-<!--            &lt;!&ndash; Post 4 &ndash;&gt;-->
-<!--            <div class="card">-->
-<!--                <div class="card-body">-->
-<!--                    <h2 class="post-title">Next.js mdx plugin</h2>-->
-<!--                    <p class="post-description">`next-mdx-remote`에서 플로그인으로 이쁜 결과물을 만들자.</p>-->
-<!--                    <p class="text-muted">22.11.11 | 8분 읽기</p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
+        </div>
     </div>
-</div>
 
-<!-- Footer -->
-<footer class="text-center mt-4">
-    <p>&copy; 2024-2024 Wisky_Ahn blog | Powered by <a href="https://getbootstrap.com/">Bootstrap</a></p>
-</footer>
+    <!-- Footer -->
+    <footer class="text-center mt-4">
+        <p>&copy; 2024-2024 Wisky_Ahn blog | Powered by <a href="https://getbootstrap.com/">Bootstrap</a></p>
+    </footer>
 
-<!-- Bootstrap JS and dependencies -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
 </html>
