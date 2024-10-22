@@ -1,62 +1,119 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>신규등록</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" >
-    <script src="/js/jquery-2.2.4/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시판 글쓰기</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #fafafa;
+        }
+
+        .navbar {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .form-control {
+            border-radius: 5px;
+        }
+
+        .upload-label {
+            font-size: 18px;
+            cursor: pointer;
+            padding: 15px;
+            border: 2px dashed #ccc;
+            display: block;
+            text-align: center;
+        }
+
+        .upload-label:hover {
+            background-color: #f0f0f0;
+        }
+
+        .image-preview, .video-preview {
+            max-width: 100%;
+            margin-top: 10px;
+        }
+
+    </style>
 </head>
 <body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">Wisky_Ahn blog</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Blog</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/">Portfolio</a>
+            </li>
+
+            <!-- 로그인/로그아웃 버튼 -->
+            <th:block th:if="${session.member != null}">
+                <li class="nav-item">
+                    <a class="nav-link" th:text="${session.member?.name}">마이페이지</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn" href="/logout">로그아웃</a>
+                </li>
+            </th:block>
+            <th:block th:unless="${session.member != null}">
+                <li class="nav-item">
+                    <a class="nav-link btn" href="/login">로그인</a>
+                </li>
+            </th:block>
+        </ul>
+    </div>
+</nav>
+
 <div class="container">
-    <h1>게시판 등록</h1>
+    <h1>게시판 글쓰기</h1>
     <form action="/write" method="post" enctype="multipart/form-data">
-        <div class="form-group col-3">
-            <label for="writer" class="form-label">작성자</label>
+        <div class="form-group">
+            <label for="writer">작성자</label>
             <input type="text" class="form-control" id="writer" name="writer" placeholder="작성자" readonly
                    th:value="${session.member?.name}">
         </div>
-        <div class="form-group col-6">
-            <label for="title" class="form-label">타이틀</label>
+
+        <div class="form-group">
+            <label for="title">타이틀</label>
             <input type="text" class="form-control" id="title" name="title" placeholder="타이틀">
         </div>
-        <div class="form-group col-6">
-            <label for="content" class="form-label">작성내용</label>
+
+        <div class="form-group">
+            <label for="content">작성내용</label>
             <textarea class="form-control" id="content" name="content" rows="3"></textarea>
         </div>
 
-        <!-- 이미지 업로드 부분 -->
-        <div class="form-group col-6">
-            <label class="col-form-label text-center photoupload" style="font-size: 30px;">
-                <div class="text-center">
-                    <div class="border-info text-center">
-                        <input type="file" accept="image/*" name="img" onchange="setThumbnail(event);" style="display: none;">
-                        <input type="hidden" name="url" id="url">
-                        <svg width="2em" height="2em" viewBox="0 0 17 16" class="bi bi-image" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" d="M14.002 2h-12a1 1 0 0 0-1 1v9l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094L15.002 9.5V3a1 1 0 0 0-1-1zm-12-1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm4 4.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
-                        </svg>
-                    </div>
-                    <span class="text-center">사진업로드</span>
-                </div>
-            </label>
-            <div id="image_container"></div>
+        <!-- 이미지 업로드 -->
+        <div class="form-group">
+            <label class="upload-label" for="img-upload">이미지 업로드</label>
+            <input type="file" accept="image/*" id="img-upload" name="img" style="display: none;" onchange="setThumbnail(event);">
+            <input type="hidden" name="url" id="url">
+            <div id="image-preview" class="image-preview"></div>
         </div>
 
-        <!-- 비디오 업로드 부분 -->
-        <div class="form-group col-6">
-            <label class="col-form-label text-center videoupload" style="font-size: 30px;">
-                <div class="text-center">
-                    <div class="border-info text-center">
-                        <input type="file" accept="video/*" name="video" onchange="setVideoThumbnail(event);" style="display: none;">
-                        <input type="hidden" name="videoUrl" id="videoUrl">
-                        <svg width="2em" height="2em" viewBox="0 0 17 16" class="bi bi-camera-video" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" d="M1 4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1l2.446-1.633A.5.5 0 0 1 16 3.5v9a.5.5 0 0 1-.554.497L13 11.5v1a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4zm13 0H3v8h8V4z"/>
-                        </svg>
-                    </div>
-                    <span class="text-center">비디오 업로드</span>
-                </div>
-            </label>
-            <div id="video_container"></div>
+        <!-- 비디오 업로드 -->
+        <div class="form-group">
+            <label class="upload-label" for="video-upload">비디오 업로드</label>
+            <input type="file" accept="video/*" id="video-upload" name="video" style="display: none;" onchange="setVideoThumbnail(event);">
+            <input type="hidden" name="videoUrl" id="videoUrl">
+            <div id="video-preview" class="video-preview"></div>
         </div>
 
         <button type="submit" class="btn btn-primary mt-3">저장</button>
@@ -64,79 +121,63 @@
     </form>
 </div>
 
-<!-- 이미지 업로드 자바스크립트 -->
+<!-- JavaScript -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
-    function sendFile(file) {
+    function sendFile(file, type) {
         var form_data = new FormData();
         form_data.append('file', file);
         $.ajax({
             data: form_data,
             type: "POST",
-            url: '/image',
+            url: type === 'image' ? '/image' : '/video',
             cache: false,
             contentType: false,
-            enctype: 'multipart/form-data',
             processData: false,
             success: function (url) {
-                $('#url').val(url);
+                if (type === 'image') {
+                    $('#url').val(url);
+                } else {
+                    $('#videoUrl').val(url);
+                }
+            },
+            error: function (err) {
+                console.error("파일 업로드 중 에러 발생:", err);
             }
         });
     }
 
-    function setThumbnail(e) {
-        var files = e.target.files;
-        var filesArr = Array.prototype.slice.call(files);
+    function setThumbnail(event) {
+        var file = event.target.files[0];
+        if (!file) return;
 
-        filesArr.forEach(function(f) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                var img = document.createElement("img");
-                img.setAttribute("src", event.target.result);
-                console.log(img);
-                $("#image_container").empty();
-                $("#image_container").append(img);
-                sendFile(f)
-            };
-            reader.readAsDataURL(f);
-        });
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var img = document.createElement("img");
+            img.setAttribute("src", e.target.result);
+            img.classList.add("image-preview");
+            $("#image-preview").empty().append(img);
+        };
+        reader.readAsDataURL(file);
+        sendFile(file, 'image');
     }
 
-    function VsendFile(file) {
-        var form_data = new FormData();
-        form_data.append('file', file);
-        $.ajax({
-            data: form_data,
-            type: "POST",
-            url: '/video',
-            cache: false,
-            contentType: false,
-            enctype: 'multipart/form-data',
-            processData: false,
-            success: function (videoUrl) {
-                $('#videoUrl').val(videoUrl);
-            }
-        });
-    }
+    function setVideoThumbnail(event) {
+        var file = event.target.files[0];
+        if (!file) return;
 
-    function setVideoThumbnail(e) {
-        var files = e.target.files;
-        var filesArr = Array.prototype.slice.call(files);
-
-        filesArr.forEach(function(f) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                var video = document.createElement("video");
-                video.setAttribute("src", e.target.result);
-                video.setAttribute("controls", true);
-                video.style.maxWidth = '100%';
-                $("#video_container").empty().append(video);
-                VsendFile(f);
-            };
-            reader.readAsDataURL(f);
-        });
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var video = document.createElement("video");
+            video.setAttribute("src", e.target.result);
+            video.setAttribute("controls", true);
+            video.classList.add("video-preview");
+            $("#video-preview").empty().append(video);
+        };
+        reader.readAsDataURL(file);
+        sendFile(file, 'video');
     }
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
