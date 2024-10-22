@@ -24,7 +24,7 @@ public interface BoardService {
 
     //삭제
     int remove(Long id);
-    
+
     //dto => entity 변환
     default Board dtoToEntity(BoardDTO dto){
         Board entity = Board.builder()
@@ -33,6 +33,7 @@ public interface BoardService {
                 .content(dto.getContent())
                 .hit(dto.getHit())
                 .url(dto.getUrl())
+                .videoUrl(dto.getVideoUrl())
                 .build();
         return entity;
     }
@@ -45,6 +46,7 @@ public interface BoardService {
                 .content(entity.getContent())
                 .hit(entity.getHit())
                 .url((entity.getUrl()))
+                .videoUrl((entity.getVideoUrl()))
                 .email(entity.getMember().getEmail())
                 .writer(entity.getMember().getName())
                 .regDate(entity.getRegDate())

@@ -2,6 +2,7 @@ package com.example.board.controller;
 
 import com.example.board.entity.UploadFile;
 import com.example.board.service.VideoService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @Controller
 public class VideoController {
 
@@ -32,6 +34,8 @@ public class VideoController {
         try {
             // 비디오 파일을 저장하고, 업로드된 파일 정보를 받아옴
             UploadFile uploadFile = videoService.store(file);
+            log.info("File upload successful, image URL: {}", uploadFile);
+            log.info("File upload successful, image URL: {}", uploadFile.getId());
             // 수정된 부분: 비디오의 URL을 Board 엔티티의 'videoUrl' 필드에 저장하기 위해 videoUrl을 반환
             return ResponseEntity.ok().body("/video/" + uploadFile.getId());
         } catch (Exception e) {

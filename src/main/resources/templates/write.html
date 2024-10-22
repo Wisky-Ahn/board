@@ -101,6 +101,23 @@
         });
     }
 
+    function VsendFile(file) {
+        var form_data = new FormData();
+        form_data.append('file', file);
+        $.ajax({
+            data: form_data,
+            type: "POST",
+            url: '/video',
+            cache: false,
+            contentType: false,
+            enctype: 'multipart/form-data',
+            processData: false,
+            success: function (videoUrl) {
+                $('#videoUrl').val(videoUrl);
+            }
+        });
+    }
+
     function setVideoThumbnail(e) {
         var files = e.target.files;
         var filesArr = Array.prototype.slice.call(files);
@@ -113,7 +130,7 @@
                 video.setAttribute("controls", true);
                 video.style.maxWidth = '100%';
                 $("#video_container").empty().append(video);
-                sendFile(f);
+                VsendFile(f);
             };
             reader.readAsDataURL(f);
         });
