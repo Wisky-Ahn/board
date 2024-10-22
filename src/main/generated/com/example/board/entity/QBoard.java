@@ -42,6 +42,8 @@ public class QBoard extends EntityPathBase<Board> {
 
     public final StringPath url = createString("url");
 
+    public final StringPath videoUrl = createString("videoUrl");
+
     public QBoard(String variable) {
         this(Board.class, forVariable(variable), INITS);
     }

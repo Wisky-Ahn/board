@@ -21,6 +21,8 @@ public class Board extends BaseEntity{
     @Builder.Default
     private int hit = 0;
     private String url;
+    private String videoUrl;  // 영상 URL 추가
+
 
     @ManyToOne(fetch = FetchType.EAGER)  //FetchType.LAZY (지연로딩)
     @JoinColumn(name="member_email")

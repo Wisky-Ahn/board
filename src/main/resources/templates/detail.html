@@ -10,7 +10,8 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
+    <!--jquery cdn-->
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <!--    삭제 js-->
     <script th:inline="javascript">
         function del(id) {
@@ -114,23 +115,35 @@
                class="text-center text-muted"></p>
             <th:block th:if="${session.member?.email == dto.email}">
                 <div class="d-flex justify-content-end" style="gap: 4px;">
-                    <button type="button" class="btn btn-outline-primary" th:onclick="location.href='/modify/[[${dto.id}]]'">
-                        수정
-                    </button>
+                    <button type="button" class="btn btn-outline-primary" th:onclick="location.href='/modify/[[${dto.id}]]'">수정</button>
                     <button type="button" class="btn btn-outline-danger" th:onclick="del([[${dto.id}]])">삭제</button>
                 </div>
             </th:block>
-
-
-
-
-
 
             <hr>
 
             <section class="my-4">
                 <p th:text="${dto.content}">Next.js와 glob 패턴을 활용하여 디렉토리 기반으로 페이지를 생성하는 방법을 설명합니다.</p>
             </section>
+
+            <th:block th:if="${dto.url != null and !#strings.isEmpty(dto.url)}">
+                <div class="mb-3 col-6">
+                    <div class="form-label">첨부사진</div>
+                    <img th:src="${dto.url}" alt="img" class="img-fluid" style="max-width: 100%; height: auto;">
+                </div>
+            </th:block>
+
+
+            <!--            <th:block th:if="${dto.videoUrl != null}">-->
+<!--                <div class="mb-3 col-6">-->
+<!--                    <div class="form-label">첨부 영상</div>-->
+<!--                    <video width="320" height="240" controls>-->
+<!--                        <source th:src="${dto.videoUrl}" type="video/mp4">-->
+<!--                        &lt;!&ndash; 다른 비디오 포맷이 있을 경우 추가 &ndash;&gt;-->
+<!--                        Your browser does not support the video tag.-->
+<!--                    </video>-->
+<!--                </div>-->
+<!--            </th:block>-->
 
         </div>
         <!-- Footer -->
@@ -139,9 +152,11 @@
         </footer>
 
         <!-- Bootstrap JS and dependencies -->
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <!-- jQuery 전체 버전 -->
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 
 </body>
 </html>

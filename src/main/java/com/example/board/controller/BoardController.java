@@ -66,13 +66,20 @@ public class BoardController {
     public String doWrite(BoardDTO dto, RedirectAttributes redirectAttributes
             , @SessionAttribute(name = "member", required = false) MemberDTO member){
         log.info("doWrite dto:" + dto);
+
         if(member==null){
             return "redirect:/login";
+        }
+        if (dto.getUrl() == null || dto.getUrl().isEmpty()) {
+            log.error("URL is missing in the DTO");  // 로그 추가: URL이 누락되었을 경우
+        } else {
+            log.info("URL is present: {}", dto.getUrl());  // 로그 추가: URL이 제대로 전달된 경우
         }
         //로그인 세션정보로 작성자 주입
         dto.setEmail(member.getEmail());
         Long id = boardService.register(dto);
         if(id!=null && id>0L){
+            log.info("Board registered successfully, ID: {}", id);  // 게시글 등록 성공 로그
             redirectAttributes.addFlashAttribute("msg", "등록 되었습니다");
         }
         return "redirect:/list";
