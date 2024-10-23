@@ -24,6 +24,8 @@ public class QBoard extends EntityPathBase<Board> {
 
     public final QBaseEntity _super = new QBaseEntity(this);
 
+    public final StringPath audioUrl = createString("audioUrl");
+
     public final StringPath content = createString("content");
 
     public final NumberPath<Integer> hit = createNumber("hit", Integer.class);

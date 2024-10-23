@@ -127,25 +127,35 @@
             <section class="my-4">
                 <p th:text="${dto.content}">Next.js와 glob 패턴을 활용하여 디렉토리 기반으로 페이지를 생성하는 방법을 설명합니다.</p>
             </section>
-
+            <!-- 이미지 출력 -->
             <th:block th:if="${dto.url != null and !#strings.isEmpty(dto.url)}">
                 <div class="mb-3 col-6">
-                    <div class="form-label">첨부사진</div>
-                    <img th:src="${dto.url}" alt="img" class="img-fluid" style="max-width: 100%; height: auto;">
+                    <img th:src="@{/media/{fileId}(fileId=${#strings.replace(dto.url, '/image/', '')})}" alt="img" class="img-fluid" style="max-width: 100%; height: auto;">
                 </div>
             </th:block>
 
-
-            <th:block th:if="${dto.videoUrl != null}">
+            <!-- 비디오 출력 -->
+            <th:block th:if="${dto.videoUrl != null and !#strings.isEmpty(dto.videoUrl)}">
                 <div class="mb-3 col-6">
                     <div class="form-label">첨부 영상</div>
                     <video width="320" height="240" controls>
-                        <source th:src="${dto.videoUrl}" type="video/mp4">
-                        <!-- 다른 비디오 포맷이 있을 경우 추가 -->
+                        <source th:src="@{/media/{fileId}(fileId=${#strings.replace(dto.videoUrl, '/video/', '')})}" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                 </div>
             </th:block>
+
+            <!-- 오디오 출력 -->
+            <th:block th:if="${dto.audioUrl != null and !#strings.isEmpty(dto.audioUrl)}">
+                <div class="mb-3 col-6">
+                    <div class="form-label">첨부 오디오</div>
+                    <audio controls>
+                        <source th:src="@{/media/{fileId}(fileId=${#strings.replace(dto.audioUrl, '/audio/', '')})}" type="audio/mpeg">
+                        Your browser does not support the audio tag.
+                    </audio>
+                </div>
+            </th:block>
+
 
         </div>
         <!-- Footer -->

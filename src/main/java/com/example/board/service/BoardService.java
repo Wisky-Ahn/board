@@ -34,6 +34,7 @@ public interface BoardService {
                 .hit(dto.getHit())
                 .url(dto.getUrl())
                 .videoUrl(dto.getVideoUrl())
+                .audioUrl(dto.getAudioUrl())
                 .build();
         return entity;
     }
@@ -47,6 +48,7 @@ public interface BoardService {
                 .hit(entity.getHit())
                 .url((entity.getUrl()))
                 .videoUrl((entity.getVideoUrl()))
+                .audioUrl((entity.getAudioUrl()))
                 .email(entity.getMember().getEmail())
                 .writer(entity.getMember().getName())
                 .regDate(entity.getRegDate())

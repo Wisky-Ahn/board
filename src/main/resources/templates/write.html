@@ -116,6 +116,14 @@
             <div id="video-preview" class="video-preview"></div>
         </div>
 
+        <!-- 오디오 업로드 -->
+        <div class="form-group">
+            <label class="upload-label" for="audio-upload">오디오 업로드</label>
+            <input type="file" accept="audio/*" id="audio-upload" name="audio" style="display: none;" onchange="setAudioThumbnail(event);">
+            <input type="hidden" name="audioUrl" id="audioUrl">
+            <div id="audio-preview" class="audio-preview"></div>
+        </div>
+
         <button type="submit" class="btn btn-primary mt-3">저장</button>
         <button type="button" class="btn btn-secondary mt-3" onclick="location.href='/list'">취소</button>
     </form>
@@ -130,15 +138,17 @@
         $.ajax({
             data: form_data,
             type: "POST",
-            url: type === 'image' ? '/image' : '/video',
+            url: '/media',
             cache: false,
             contentType: false,
             processData: false,
             success: function (url) {
                 if (type === 'image') {
-                    $('#url').val(url);
-                } else {
-                    $('#videoUrl').val(url);
+                    $('#url').val(url);  // 이미지 파일의 URL을 저장
+                } else if (type === 'video') {
+                    $('#videoUrl').val(url);  // 비디오 파일의 URL을 저장
+                } else if (type === 'audio') {
+                    $('#audioUrl').val(url);  // 오디오 파일의 URL을 저장
                 }
             },
             error: function (err) {
@@ -177,6 +187,24 @@
         reader.readAsDataURL(file);
         sendFile(file, 'video');
     }
+
+    function setAudioThumbnail(event) {
+        var file = event.target.files[0];
+        if (!file) return;
+
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var audio = document.createElement("audio");
+            audio.setAttribute("src", e.target.result);
+            audio.setAttribute("controls", true);
+            audio.classList.add("audio-preview");
+            $("#audio-preview").empty().append(audio);  // audio-preview 요소에 오디오 플레이어 추가
+        };
+        reader.readAsDataURL(file);  // 파일을 읽어서 오디오 URL 생성
+        sendFile(file, 'audio');  // 파일을 서버에 업로드
+    }
+
+
 </script>
 
 </body>

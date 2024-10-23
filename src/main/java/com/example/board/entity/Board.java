@@ -22,6 +22,7 @@ public class Board extends BaseEntity{
     private int hit = 0;
     private String url;
     private String videoUrl;  // 영상 URL 추가
+    private String audioUrl;
 
 
     @ManyToOne(fetch = FetchType.EAGER)  //FetchType.LAZY (지연로딩)

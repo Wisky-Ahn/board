@@ -16,6 +16,7 @@ public class BoardDTO {
     private int hit;
     private String url;
     private String videoUrl; // 영상 URL 추가
+    private String audioUrl;
 
     private LocalDateTime regDate;
     private LocalDateTime modDate;
