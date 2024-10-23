@@ -127,15 +127,21 @@
             <section class="my-4">
                 <p th:text="${dto.content}">Next.js와 glob 패턴을 활용하여 디렉토리 기반으로 페이지를 생성하는 방법을 설명합니다.</p>
             </section>
+
+
             <!-- 이미지 출력 -->
             <th:block th:if="${dto.url != null and !#strings.isEmpty(dto.url)}">
+                <hr>
                 <div class="mb-3 col-6">
                     <img th:src="@{/media/{fileId}(fileId=${#strings.replace(dto.url, '/image/', '')})}" alt="img" class="img-fluid" style="max-width: 100%; height: auto;">
                 </div>
             </th:block>
 
+
+
             <!-- 비디오 출력 -->
             <th:block th:if="${dto.videoUrl != null and !#strings.isEmpty(dto.videoUrl)}">
+                <hr>
                 <div class="mb-3 col-6">
                     <div class="form-label">첨부 영상</div>
                     <video width="320" height="240" controls>
@@ -145,8 +151,11 @@
                 </div>
             </th:block>
 
+
+
             <!-- 오디오 출력 -->
             <th:block th:if="${dto.audioUrl != null and !#strings.isEmpty(dto.audioUrl)}">
+                <hr>
                 <div class="mb-3 col-6">
                     <div class="form-label">첨부 오디오</div>
                     <audio controls>
