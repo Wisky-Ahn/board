@@ -32,12 +32,12 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-    //신규생성 화면
-    @GetMapping("/signup")
-    public String signup(){
-        log.info("signup");
-        return "/signup";
-    }
+//    //신규생성 화면
+//    @GetMapping("/signup")
+//    public String signup(){
+//        log.info("signup");
+//        return "/signup";
+//    }
 
     //신규저장
     @PostMapping("/signup")
