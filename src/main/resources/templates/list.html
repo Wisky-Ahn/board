@@ -36,6 +36,13 @@
 
         .card {
             margin-bottom: 20px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1), -5px -5px 15px rgba(255, 255, 255, 0.5);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        /* 마우스를 올렸을 때 오목해지는 효과 */
+        .card:hover {
+            box-shadow: inset 5px 5px 15px rgba(0, 0, 0, 0.2), inset -5px -5px 15px rgba(255, 255, 255, 0.2);
         }
 
         /* Back to Top 버튼 스타일 */
@@ -75,6 +82,32 @@
 
         .scroll-background-3 {
             background-color: rgba(0, 0, 0, 1); /* 검은색 */
+        }
+
+        .page-link {
+            background-color: transparent;
+            border: none;
+            color: #343a40;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            padding: 8px 16px;
+        }
+
+        .page-link:hover {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .pagination .active .page-link {
+            background-color: #343a40;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .pagination .disabled .page-link {
+            color: #ccc;
+            border-radius: 5px;
         }
     </style>
 </head>
@@ -126,7 +159,7 @@
                              style="width:150px; height:150px; object-fit:cover;">
 
                         <!-- 이름 -->
-                        <h5 class="blog-title mt-3">안현준</h5>
+                        <h5 class="blog-title mt-3" th:text="${session.member?.name}">안현준</h5>
 
                         <!-- 소개 -->
                         <p class="text-muted">Fullstack Developer</p>
@@ -162,8 +195,6 @@
                 </div>
             </div>
 
-
-
             <!-- 목록번호 -->
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
@@ -188,39 +219,6 @@
                 </ul>
             </nav>
 
-            <!-- Custom CSS -->
-            <style>
-                /* 살짝 둥근 모서리 스타일 적용 */
-                .page-link {
-                    background-color: transparent; /* 투명 배경 */
-                    border: none; /* 테두리 제거 */
-                    color: #343a40; /* 기본 텍스트 색상 */
-                    border-radius: 5px; /* 모서리만 살짝 둥글게 */
-                    transition: background-color 0.3s ease, color 0.3s ease;
-                    padding: 8px 16px; /* 패딩 추가 */
-                }
-
-                /* 마우스를 올렸을 때 검은색으로 변경 */
-                .page-link:hover {
-                    background-color: #343a40; /* 검은색 배경 */
-                    color: white; /* 텍스트를 흰색으로 */
-                }
-
-                /* 현재 페이지 강조 */
-                .pagination .active .page-link {
-                    background-color: #343a40; /* 검은색 배경 */
-                    color: white; /* 흰색 텍스트 */
-                    border: none; /* 테두리 제거 */
-                    border-radius: 5px; /* 살짝 둥근 모서리 */
-                }
-
-                /* 비활성화된 페이지 버튼 스타일 */
-                .pagination .disabled .page-link {
-                    color: #ccc; /* 회색으로 비활성화 표시 */
-                    border-radius: 5px; /* 살짝 둥근 모서리 */
-                }
-            </style>
-
         </div>
     </div>
 
@@ -232,11 +230,12 @@
     <!-- Back to Top 버튼 -->
     <div class="lqd-back-to-top pos-fix" id="backToTop">
         <a href="#wrap" class="d-inline-flex align-items-center justify-content-center border-radius-circle pos-rel overflow-hidden">
-            <svg class="d-inline-block" xmlns="http://www.w3.org/2000/svg" width="21" height="32" viewBox="0 0 21 32">
-                <path fill="white" d="M10.5 13.625l-7.938 7.938c-.562.562-1.562.562-2.124 0C.124 21.25 0 20.875 0 20.5s.125-.75.438-1.063L9.5 10.376c.563-.563 1.5-.5 2.063.063l9 9c.562.562.562 1.562 0 2.125s-1.563.562-2.125 0z"></path>
+            <svg class="d-inline-block" xmlns="http://www.w3.org/2000/svg" width="21" height="32" viewBox="0 0 24 24">
+                <path fill="white" d="M12 2l-10 10h6v10h8V12h6z"/>
             </svg>
         </a>
     </div>
+
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -270,17 +269,16 @@
         window.onscroll = function() {
             const backToTopBtn = document.querySelector('.lqd-back-to-top');
             if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-                backToTopBtn.classList.add('show'); // 스크롤이 일정 이상일 때 버튼 표시
+                backToTopBtn.classList.add('show');
             } else {
-                backToTopBtn.classList.remove('show'); // 스크롤이 위쪽이면 버튼 숨김
+                backToTopBtn.classList.remove('show');
             }
         };
 
         document.querySelector('.lqd-back-to-top a').addEventListener('click', function(e) {
             e.preventDefault();
-            window.scrollTo({top: 0, behavior: 'smooth'}); // 부드럽게 스크롤하여 위로 이동
+            window.scrollTo({top: 0, behavior: 'smooth'});
         });
-
     </script>
 
 </body>
